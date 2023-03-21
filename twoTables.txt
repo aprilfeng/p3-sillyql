@@ -1,0 +1,14 @@
+CREATE slhs 2 string int legal lanyard
+CREATE bdjh 2 string int legal lanyard
+INSERT INTO slhs 2 ROWS
+summer 124
+winter 432
+none 120
+PRINT FROM bdjh 1 legal ALL
+PRINT FROM slhs 1 legal ALL
+DELETE FROM bdjh WHERE legal = winter
+DELETE FROM slhs WHERE legal = winter
+DELETE FROM slhs WHERE lanyard > 500
+REMOVE slhs
+REMOVE bdjh
+QUIT

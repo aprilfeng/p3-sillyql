@@ -1,0 +1,24 @@
+CREATE table1 1 string age
+INSERT INTO table1 2 ROWS
+5
+4
+DELETE FROM table1 WHERE age > 3
+PRINT FROM table1 1 age ALL
+DELETE FROM table1 WHERE age = 4
+CREATE table2 4 string string string string is_funny age weight name
+INSERT INTO table2 4 ROWS
+true 12 15.3 billy
+false 20 200 steven
+true 53 600 lisa
+false 2 20 bob
+INSERT INTO table2 1 ROWS
+false 100 90 anna
+PRINT FROM table2 4 name weight age is_funny ALL
+DELETE FROM table2 WHERE age > true
+PRINT FROM table2 4 name weight age is_funny ALL
+DELETE FROM table2 WHERE is_funny > false
+PRINT FROM table2 4 name weight age is_funny ALL
+DELETE FROM table2 WHERE age = 20
+REMOVE table2
+REMOVE table1
+QUIT

@@ -1,0 +1,18 @@
+CREATE jobs 3 string int bool name salary want_to_do
+INSERT INTO jobs 4 ROWS
+doctor 500000 true
+lawyer 1000000 true
+librarian 30000 true
+professor 80000 false
+PRINT FROM jobs 3 want_to_do salary name ALL
+DELETE FROM jobs WHERE name = teacher
+PRINT FROM jobs 2 want_to_do name ALL
+INSERT INTO jobs 2 ROWS
+doctor 200000 true
+teacher 30000 true
+PRINT FROM jobs 3 salary want_to_do name ALL
+DELETE FROM jobs WHERE salary = 30000
+PRINT FROM jobs 3 name salary want_to_do ALL
+DELETE FROM jobs WHERE want_to_do = true
+REMOVE jobs
+QUIT
