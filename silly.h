@@ -25,11 +25,12 @@ class Table{
     string name;
     vector<EntryType> colTypes;
     vector<string> colNames;
+    unordered_map<string, int> colIndex;
     vector<vector<TableEntry>> data;
     
     Table() {}
-    Table(string name, vector<EntryType> &cT, vector<string> &cN) : 
-            name(name), colTypes(cT), colNames(cN){
+    Table(string name, vector<EntryType> &cT, vector<string> &cN, unordered_map<string, int> &cI) : 
+            name(name), colTypes(cT), colNames(cN), colIndex(cI){
       //data.resize(0, vector<TableEntry>(0));
     }
 
@@ -48,7 +49,7 @@ class Table{
 void create(unordered_map<string, Table> &);
 void remove(unordered_map<string, Table> &);
 void insert(unordered_map<string, Table> &database);
-void print(unordered_map<string, Table> &database);
+void print(unordered_map<string, Table> &database, Modes & modes);
 
 
 

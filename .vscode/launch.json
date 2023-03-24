@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/silly",
-            "args": ["<", "cp2-in.txt"],
+            "args": ["<", "cp3-in.txt"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

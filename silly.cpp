@@ -4,6 +4,7 @@
 #include <string>
 #include <sys/types.h>
 #include <type_traits>
+#include <unordered_map>
 #include <vector>
 #include "TableEntry.h"
 #include "silly.h"
@@ -46,7 +47,6 @@ int main(int argc, char * argv[]) {
     Modes modes;
     getMode(argc, argv, modes); //know output mode
     
-    
     //unordered map: string to table object
     unordered_map<string, Table> database;
 
@@ -78,7 +78,7 @@ int main(int argc, char * argv[]) {
             insert(database);
         }
         else if(command[0] == 'P'){
-            print(database);
+            print(database, modes);
         }
         else if(command[0] == 'D'){
             
@@ -122,8 +122,11 @@ void create(unordered_map<string, Table> &database){
         //create table and add to database
         int numCols;
         cin >> numCols;
+        //cout << "num cols is " << numCols << "\n";
         vector<EntryType> colTypes;
         colTypes.reserve(numCols);
+        
+        unordered_map<string, int> colIndex;
         string type;
         for(int i = 0; i<numCols; i++){
             cin >> type;
@@ -142,6 +145,7 @@ void create(unordered_map<string, Table> &database){
             }
 
             colTypes.emplace_back(t); 
+            
         }
 
         vector<string> colNames;
@@ -152,10 +156,11 @@ void create(unordered_map<string, Table> &database){
             cin >> colName;
             colNamesTogether += colName + " ";
             colNames[i] = colName; 
-            
+            colIndex[colName] = i;
+            //cout << "I is " << i << "\n";
         }
 
-        Table table{name, colTypes, colNames};
+        Table table{name, colTypes, colNames, colIndex};
         //emplace into unordered map
         database.emplace(name, table);
 
@@ -168,6 +173,7 @@ void create(unordered_map<string, Table> &database){
         exit(1);
         return;
     }
+
 }
 
 void remove(unordered_map<string, Table> &database){
@@ -226,16 +232,15 @@ void insert(unordered_map<string, Table> &database){
                         string value;
                         cin >> value;
                         //cout << "string " << value << " ";
-                        TableEntry te(value);
-                        data[r].emplace_back(te);
+                        data[r].emplace_back(TableEntry(value));
                         break;
                     }
                     case EntryType::Bool:{
-                        string value;
-                        cin >> value;
-                        bool b = value[0]=='t'? true : false;
+                        bool value;
+                        cin >> boolalpha >> value;
+                        //bool b = value[0]=='t'? true : false;
                         // cout << "bool: "<< b << " ";
-                        TableEntry te(b);
+                        TableEntry te(value);
                         data[r].emplace_back(te);
                         break;
                     }
@@ -260,37 +265,62 @@ void insert(unordered_map<string, Table> &database){
             //cout << "\n";
         }
 
-        cout << "Added " << added << " rows to " << name << " from position " << index << " to " << (index+added) << "\n";        
+        cout << "Added " << added << " rows to " << name << " from position " << index << " to " << (index+added-1) << "\n";        
+        // auto size = database.at(name).data.size();
+        // cout << size << "is the size\n";
     }
     //cout << "done\n";
     return;
 }
 
-void print(unordered_map<string, Table> &database){
+void print(unordered_map<string, Table> &database, Modes & modes){
     string temp, name;
     cin >> temp >> name;
 
     auto it = database.find(name);
+    auto size = database.at(name).colNames.size();
     if(it == database.end()){
-
         cerr << "Error during PRINT: " << name << " does not name a table in the database\n";
         exit(1);
         return;
-
     }
     else{
         int numCols;
         cin >> numCols;
+        //cout << size << " is the size \n";
         
-        vector<string> cols;
-        cols.resize(numCols);
-        string col;
+        vector<int> colPrintFlag(size, false);
+
+        //cout << boolalpha << colPrintFlag[0];
+        
+        //cols.resize(size);
+        string currCol;
+        unordered_map<string, int> &colIndex =  database.at(name).colIndex;
+        //auto & colNames = database.at(name).colNames;
+
+        // string all;
+        // getline(cin, all);
+        // cout << all << "\n";
+        // cout << numCols << "\n";
+        // return;
+
+        //for the number of columns, read in each column and set to true for printing
         for(int i = 0; i<numCols; i++){
-            cin >> col;
-            // if(find(database.at(name).colNames.begin(), database.at(name).colNames.end(), col)==database.at(name).colNames.end()){
-            //     cerr << "Error during INSERT: " << col << " does not name a column in " << name << "\n";
-            // }
-            cols[i] = col;
+            cin >> currCol;
+                        
+            auto itCol = colIndex.find(currCol);
+            if(itCol == colIndex.end()){
+                cerr << "Error during PRINT: " << currCol << " does not name a column in " << name << "\n";
+                exit(1);
+            }
+            else{
+                //cout << "setting\n";
+
+                //cols[i] = col;
+                // cout << "curr col is " << currCol << "\n";
+                // cout << colIndex[currCol] << " is col index\n ";
+                colPrintFlag[i] = colIndex[currCol];
+            } 
         }
 
         string cmd;
@@ -298,18 +328,31 @@ void print(unordered_map<string, Table> &database){
 
         if(cmd[0] == 'W'){
             //where colname OP value
+            string tmp;
+            getline(cin, tmp);
         }
         else{
             //print all 
 
-            auto & data = database.at(name).data;
-            
+            if(!modes.quiet){
+                auto & data = database.at(name).data;
+                auto & colNames = database.at(name).colNames;
+                
+                //print out the columns
+                for(int i  = 0; i<numCols; i++){                    
+                    cout << colNames[colPrintFlag[i]] << " ";
+                }
+                cout << "\n";
 
-            for(size_t r = 0; r<data.size(); r++){
-                for(size_t c = 0; c<data[r].size(); c++){
-                    //if(databas
+                //print out values for each row for correct columns
+                for(size_t r = 0; r<data.size(); r++){
+                    for(int c = 0; c<numCols; c++){
+                            cout << boolalpha << data[r][colPrintFlag[c]] << " ";
+                    }
+                    cout << "\n";
                 }
             }
+            cout << "Printed " << database.at(name).data.size() << " matching rows from " << name << "\n";
         }
     }
 }
