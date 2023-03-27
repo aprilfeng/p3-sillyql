@@ -48,7 +48,7 @@ int main(int argc, char * argv[]) {
     getMode(argc, argv, modes); //know output mode
     
     //unordered map: string to table object
-    unordered_map<string, Table> database;
+    unordered_map<string, Table*> database;
 
     string command;
     do{
@@ -113,7 +113,7 @@ int main(int argc, char * argv[]) {
     return 0;
 }
 
-void create(unordered_map<string, Table> &database){
+void create(unordered_map<string, Table*> &database){
     string name;
     cin >> name;
 
@@ -160,23 +160,24 @@ void create(unordered_map<string, Table> &database){
             //cout << "I is " << i << "\n";
         }
 
-        Table table{name, colTypes, colNames, colIndex};
+        Table* table = new Table(name, colTypes, colNames, colIndex);
+        database[table->name] = table;
         //emplace into unordered map
-        database.emplace(name, table);
+        //database.emplace(name, table);
 
-        cout << "New table " << name << " with column(s) " << colNamesTogether << "created\n";
+        cout << "New table " << name << " with column(s) " 
+                << colNamesTogether << "created\n";
         return;
     }
     else{
         //table already exists
         cerr << "Error during CREATE: Cannot create already existing table " << name << "\n";
         exit(1);
-        return;
     }
 
 }
 
-void remove(unordered_map<string, Table> &database){
+void remove(unordered_map<string, Table*> &database){
     string name;
     cin >> name;
 
@@ -184,16 +185,16 @@ void remove(unordered_map<string, Table> &database){
     if(it == database.end()){
         cerr << "Error during REMOVE: " << name << " does not name a table in the database\n";
         exit(1);
-        return;
     }
     else{
+        delete it->second;
         database.erase(name);
         cout << "Table " << name << " deleted\n";
         return;
     }
 }
 
-void insert(unordered_map<string, Table> &database){
+void insert(unordered_map<string, Table*> &database){
     string name, temp;
     cin >> temp >> name;
     
@@ -202,11 +203,10 @@ void insert(unordered_map<string, Table> &database){
     if(it == database.end()){
         cerr << "Error during INSERT: " << name << " does not name a table in the database\n";
         exit(1);
-        return;
     }
     else{
-        auto & data = database.at(name).data;
-        auto & colTypes = database.at(name).colTypes;
+        auto & data = database.at(name)->data;
+        auto & colTypes = database.at(name)->colTypes;
         size_t index = data.size();
         size_t added;
         cin >> added >> temp; 
@@ -273,16 +273,15 @@ void insert(unordered_map<string, Table> &database){
     return;
 }
 
-void print(unordered_map<string, Table> &database, Modes & modes){
+void print(unordered_map<string, Table*> &database, Modes & modes){
     string temp, name;
     cin >> temp >> name;
 
     auto it = database.find(name);
-    auto size = database.at(name).colNames.size();
+    auto size = database.at(name)->colNames.size();
     if(it == database.end()){
         cerr << "Error during PRINT: " << name << " does not name a table in the database\n";
         exit(1);
-        return;
     }
     else{
         int numCols;
@@ -295,7 +294,7 @@ void print(unordered_map<string, Table> &database, Modes & modes){
         
         //cols.resize(size);
         string currCol;
-        unordered_map<string, int> &colIndex =  database.at(name).colIndex;
+        unordered_map<string, int> &colIndex =  database.at(name)->colIndex;
         //auto & colNames = database.at(name).colNames;
 
         // string all;
@@ -335,8 +334,8 @@ void print(unordered_map<string, Table> &database, Modes & modes){
             //print all 
 
             if(!modes.quiet){
-                auto & data = database.at(name).data;
-                auto & colNames = database.at(name).colNames;
+                auto & data = database.at(name)->data;
+                auto & colNames = database.at(name)->colNames;
                 
                 //print out the columns
                 for(int i  = 0; i<numCols; i++){                    
@@ -352,7 +351,7 @@ void print(unordered_map<string, Table> &database, Modes & modes){
                     cout << "\n";
                 }
             }
-            cout << "Printed " << database.at(name).data.size() << " matching rows from " << name << "\n";
+            cout << "Printed " << database.at(name)->data.size() << " matching rows from " << name << "\n";
         }
     }
 }

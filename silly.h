@@ -46,11 +46,12 @@ class Table{
     //k
 };
 
-void create(unordered_map<string, Table> &);
-void remove(unordered_map<string, Table> &);
-void insert(unordered_map<string, Table> &database);
-void print(unordered_map<string, Table> &database, Modes & modes);
-
+void create(unordered_map<string, Table*> &);
+void remove(unordered_map<string, Table*> &);
+void insert(unordered_map<string, Table*> &database);
+void print(unordered_map<string, Table*> &database, Modes & modes);
+void generate(unordered_map<string, Table*> &database);
+void join(unordered_map<string, Table*> &database);
 
 
 /*
