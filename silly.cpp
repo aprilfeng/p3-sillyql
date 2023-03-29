@@ -269,17 +269,16 @@ void Table::insertTable(){
         }
 
         //take care of indices here
-        // if(index != ' ' && !fixIndex){
-        //     int currIndex = colIndex[indexCol];
-        //     if(index == 'b'){
-        //         bstIndex[data[index][currIndex]].emplace_back(index);
-        //     }
-        //     else{
-        //         hashIndex[data[index][currIndex]].emplace_back(index);
-        //     }
-        // }
-        // index += 1;
-        //cout << "\n";
+        //if a bst OR hash index exists
+        if(index != ' ' && !fixIndex){
+            int indexNum = colIndex[indexCol];
+            if(index == 'b'){
+                bstIndex[data[r][indexNum]].emplace_back(r);
+            }
+            else{
+                hashIndex[data[r][indexNum]].emplace_back(r);
+            }
+        }
     }
 
 
