@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/silly_debug",
-            "args": ["<", "testPrint.txt", ">", "testPrint.out"],
+            "args": ["<", "spec.txt", ">", "spec.out"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

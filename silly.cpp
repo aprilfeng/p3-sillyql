@@ -37,7 +37,7 @@ void getMode(int argc, char * argv[], Modes &modes) {
             }       
 
             default: 
-                cerr << "Error: invalid option\n";
+                cerr << "Error: Unknown command line option\n";
                 exit(1);
         } //switch choice
     } //while loop
@@ -45,9 +45,16 @@ void getMode(int argc, char * argv[], Modes &modes) {
 
 int main(int argc, char * argv[]) {
     ios_base::sync_with_stdio(false);
+    cin >> std::boolalpha; 
+    cout << std::boolalpha;
 
     Modes modes;
     getMode(argc, argv, modes); //know output mode
+
+    if(modes.help){
+        cout << "Help on SillyQL!\n";
+        exit(0);
+    }
     
     //unordered map: string to table object
     unordered_map<string, Table> database;
@@ -111,9 +118,9 @@ int main(int argc, char * argv[]) {
         }         
     } while(command !="QUIT");
 
-    string tmp;
-    getline(cin, tmp);
-    cout << tmp;
+    // string tmp;
+    // getline(cin, tmp);
+    // cout << tmp;
 
     cout << "Thanks for being silly!\n";
     
@@ -135,7 +142,7 @@ void create(unordered_map<string, Table> &database){
         colTypes.reserve(numCols);
         
         //insert column types
-        unordered_map<string, int> colIndex;
+        unordered_map<string, int32_t> colIndex;
         string type;
         for(int i = 0; i<numCols; i++){
             cin >> type;
@@ -183,6 +190,7 @@ void create(unordered_map<string, Table> &database){
         cout << "Error during CREATE: Cannot create already existing table " << name << "\n";
         string temp;
         getline(cin, temp);
+        return;
         //exit(1);
     }
 }
@@ -197,6 +205,7 @@ void remove(unordered_map<string, Table> &database){
         cout << "Error during REMOVE: " << name << " does not name a table in the database\n";
         string temp;
         getline(cin, temp);
+        return;
         //exit(1);
     }
     else{
@@ -218,6 +227,7 @@ void insert(unordered_map<string, Table> &database){
         cout << "Error during INSERT: " << name << " does not name a table in the database\n";
         string temp;
         getline(cin, temp);
+        return;
         //exit(1);
     }
     else{
@@ -258,7 +268,7 @@ void Table::insertTable(){
                 }
                 case EntryType::Bool:{
                     bool value;
-                    cin >> boolalpha >> value;
+                    cin >> value;
                     data[r].emplace_back(value);
                     break;
                 }
@@ -276,19 +286,6 @@ void Table::insertTable(){
                 }
             }
         }
-
-        //take care of indices here
-        //if a bst OR hash index exists
-        // if(index != ' ' && !fixIndex){
-        // if(index != ' '){
-        //     int indexNum = colIndex[indexCol];
-        //     if(index == 'b'){
-        //         bstIndex[data[r][indexNum]].emplace_back(r);
-        //     }
-        //     else{
-        //         hashIndex[data[r][indexNum]].emplace_back(r);
-        //     }
-        // }
     }
     updateIndex();
 
@@ -307,6 +304,7 @@ void print(unordered_map<string, Table> &database, Modes & modes){
         cout << "Error during PRINT: " << name << " does not name a table in the database\n";
         string temp;
         getline(cin, temp);
+        return;
         //exit(1);
     }
     else{
@@ -332,6 +330,7 @@ void Table::printTable(Modes & modes){
             cout << "Error during PRINT: " << currCol << " does not name a column in " << name << "\n";
             string temp;
             getline(cin, temp);
+            return;
             //exit(1);
         }
         else{
@@ -349,11 +348,12 @@ void Table::printTable(Modes & modes){
         char op;
         cin >> op;
 
-        auto itCol = colIndex.find(currCol);
+        auto itCol = colIndex.find(compareCol);
         if(itCol == colIndex.end()){
             cout << "Error during PRINT: " << compareCol << " does not name a column in " << name << "\n";
             string temp;
             getline(cin, temp);
+            return;
             //exit(1);
         }
 
@@ -371,7 +371,7 @@ void Table::printTable(Modes & modes){
         //if bst, print in order on bst, tie break by order of insertion
 
         auto colType = colTypes[colIndex[compareCol]];
-        int count;
+        int count = 0;
 
         switch(colType){
             case EntryType::Bool :{
@@ -421,7 +421,7 @@ void Table::printTable(Modes & modes){
             //print out values for each row for correct columns
             for(size_t r = 0; r<data.size(); r++){
                 for(int c = 0; c<numCols; c++){
-                        cout << boolalpha << data[r][colPrintFlag[c]] << " ";
+                        cout << data[r][colPrintFlag[c]] << " ";
                 }
                 cout << "\n";
             }
@@ -431,33 +431,37 @@ void Table::printTable(Modes & modes){
 }
 
 int Table::printHelper(Modes & modes, TableEntry & compareVal, char op, string compareCol, vector<int> & colPrintFlag, int numCols){
+    int compareColIndex = colIndex[compareCol];
     switch(op) {
         case '>' : {
-            if(index == 'b' && indexCol == compareCol){
+            if(index == 'b' && indexCol == compareColIndex){
                 return printBst(modes, op, compareVal, colPrintFlag, numCols);
             }
             else{
                 return printNoIndex<GreaterThan>(modes, compareCol, compareVal, colPrintFlag, numCols);
             }
+            break;
         }
         case '<' : {
-            if(index == 'b' && indexCol == compareCol){
+            if(index == 'b' && indexCol == compareColIndex){
                 return printBst(modes, op, compareVal, colPrintFlag, numCols);
             }
             else{
                 return printNoIndex<LessThan>(modes, compareCol, compareVal, colPrintFlag, numCols);
             }
+            break;
         }
         case '=' : {
-            if(index == 'b' && indexCol == compareCol){
+            if(index == 'b' && indexCol == compareColIndex){
                 return printBst(modes, op, compareVal, colPrintFlag, numCols);
             }
-            else if(index == 'h' && indexCol == compareCol){
+            else if(index == 'h' && indexCol == compareColIndex){
                 return printHash(modes, compareVal, colPrintFlag, numCols);
             }
             else{
                 return printNoIndex<EqualTo>(modes, compareCol, compareVal, colPrintFlag, numCols);
             }
+            break;
         }
     }
     return 0;
@@ -472,11 +476,12 @@ int Table::printNoIndex(Modes & modes, string colName, TableEntry & compareVal, 
         if(cmp(data[r])){
             if(!modes.quiet){
                 for(int c = 0; c<numCols; c++){
-                    cout << boolalpha << data[r][colPrintFlag[c]] << " ";
+                    cout <<  data[r][colPrintFlag[c]] << " ";
                 }
                 cout << "\n";
-                count += 1;
+                
             }
+            count += 1;
         }
     }
 
@@ -487,7 +492,7 @@ int Table::printBst(Modes & modes, char op, TableEntry & compareVal, vector<int>
 
     int count = 0;
 
-    map<TableEntry, vector<size_t>>::iterator it;
+    map<TableEntry, vector<int32_t>>::iterator it;
     if(op == '>')
         it = bstIndex.upper_bound(compareVal);
     else if(op == '<')
@@ -499,7 +504,7 @@ int Table::printBst(Modes & modes, char op, TableEntry & compareVal, vector<int>
             if(!modes.quiet){
                 for(auto tmp : it->second){
                     for(int c = 0; c<numCols; c++){
-                        cout << boolalpha << data[tmp][colPrintFlag[c]] << " ";
+                        cout <<  data[tmp][colPrintFlag[c]] << " ";
                     }
                     cout << "\n";
                     count += 1;
@@ -517,7 +522,7 @@ int Table::printBst(Modes & modes, char op, TableEntry & compareVal, vector<int>
         if(!modes.quiet){
             for(int r = 0; r<int(it->second.size()); r++){
                 for(int c = 0; c<numCols; c++){
-                    cout << boolalpha << data[it->second[r]][colPrintFlag[c]] << " ";
+                    cout <<  data[it->second[r]][colPrintFlag[c]] << " ";
                 }
                 cout << "\n";
             }
@@ -538,7 +543,7 @@ int Table::printHash(Modes & modes, TableEntry & compareVal, vector<int> & colPr
         if(!modes.quiet){
             for(auto tmp : it->second){
                 for(int c = 0; c<numCols; c++){
-                    cout << boolalpha << data[tmp][colPrintFlag[c]] << " ";
+                    cout <<  data[tmp][colPrintFlag[c]] << " ";
                 }
                 cout << "\n";
                 count += 1;
@@ -560,6 +565,7 @@ void deleteFrom(unordered_map<string, Table> &database){
         cout << "Error during DELETE: " << name << " does not name a table in the database\n";
         string temp;
         getline(cin, temp);
+        return;
         //exit(1);
     }
     else{
@@ -576,6 +582,7 @@ void deleteFrom(unordered_map<string, Table> &database){
             cout << "Error during DELETE: " << colName << " does not name a column in " << name << "\n";
             string temp;
             getline(cin, temp);
+            return;
             //exit(1);
         }
         else{
@@ -657,6 +664,7 @@ void generate(unordered_map<string, Table> &database){
         cout << "Error during GENERATE: " << name << " does not name a table in the database\n";
         string temp;
         getline(cin, temp);
+        return;
         //exit(1);
     }
     else{
@@ -669,11 +677,12 @@ void generate(unordered_map<string, Table> &database){
             cout << "Error during GENERATE: " << colName << " does not name a column in " << name << "\n";
             string temp;
             getline(cin, temp);
+            return;
             //exit(1);
         }
         else{
             it->second.index = indexType[0];
-            it->second.indexCol = colName;
+            it->second.indexCol = it->second.colIndex[colName];
 
             it->second.updateIndex();
 
@@ -686,21 +695,23 @@ void Table::updateIndex(){
     if(!bstIndex.empty()) bstIndex.clear();
     if(!hashIndex.empty()) hashIndex.clear();
     
-    int indexNum = colIndex[indexCol];
+    //int indexNum = colIndex[indexCol];
 
     if(index == 'b'){
         for(size_t r = 0; r<data.size(); r++)
-            bstIndex[data[r][indexNum]].emplace_back(r);
+            bstIndex[data[r][indexCol]].emplace_back(r);
     }
-    else{
+    else if(index=='h'){
         hashIndex.reserve(data.size());
         for(size_t r = 0; r<data.size(); r++)
-            hashIndex[data[r][indexNum]].emplace_back(r);
+            hashIndex[data[r][indexCol]].emplace_back(r);
+    }
+    else{
+        return;
     }
 }
 
 void join(unordered_map<string, Table> &database, Modes & modes){
-    if(!modes.quiet){}
     string name1, name2, temp;
     cin >> name1 >> temp >> name2;
 
@@ -710,12 +721,14 @@ void join(unordered_map<string, Table> &database, Modes & modes){
         cout << "Error during JOIN: " << name1 << " does not name a table in the database\n";
         string temp;
         getline(cin, temp);
+        return;
         //exit(1);
     }
     else if(it2 == database.end()){
         cout << "Error during JOIN: " << name2 << " does not name a table in the database\n";
         string temp;
         getline(cin, temp);
+        return;
         //exit(1);
     }
     else{
@@ -728,15 +741,17 @@ void join(unordered_map<string, Table> &database, Modes & modes){
         auto colIt2 = table2.colIndex.find(col2); 
 
         if(colIt1 == table1.colIndex.end()){
-            cout << "Error during JOIN: " << name1 << " does not name a column in " << name1 << "\n";
+            cout << "Error during JOIN: " << col1 << " does not name a column in " << name1 << "\n";
             string temp;
             getline(cin, temp);
+            return;
             //exit(1);
         }
         else if(colIt2 == table2.colIndex.end()){
-            cout << "Error during JOIN: " << name2 << " does not name a column in " << name2 << "\n";
+            cout << "Error during JOIN: " << col2 << " does not name a column in " << name2 << "\n";
             string temp;
             getline(cin, temp);
+            return;
             //exit(1);
         }
         else{
@@ -761,6 +776,7 @@ void join(unordered_map<string, Table> &database, Modes & modes){
                         cout << "Error during JOIN: " << colName << " does not name a column in " << table1.name << "\n";
                         string temp;
                         getline(cin, temp);
+                        return;
                         //exit(1);
                     }
                 }
@@ -770,6 +786,7 @@ void join(unordered_map<string, Table> &database, Modes & modes){
                         cout << "Error during JOIN: " << colName << " does not name a column in " << table2.name << "\n";
                         string temp;
                         getline(cin, temp);
+                        return;
                         //exit(1);
                     }
                 }
@@ -788,17 +805,18 @@ void join(unordered_map<string, Table> &database, Modes & modes){
 
             //for hash
             int numRows = 0;
-            if(table2.index == 'h' && table2.indexCol == col2){
+            int col2Index = table2.colIndex[col2];
+            if(table2.index == 'h' && table2.indexCol == col2Index){
                 numRows = joinHelper(table1, table2, joinCols, col1, table2.hashIndex, modes);
             }
-            else if(table2.index == 'b' && table2.indexCol == col2){ //for bst
+            else if(table2.index == 'b' && table2.indexCol == col2Index){ //for bst
                 numRows = joinHelper(table1, table2, joinCols, col1, table2.bstIndex, modes);
             }
             else{//for none; generate index
                 unordered_map<TableEntry, vector<size_t>> tempHashIndex;
                 tempHashIndex.reserve(table2.data.size());
                 for(size_t i = 0; i<table2.data.size(); i++){
-                    tempHashIndex[table2.data[i][table2.colIndex[col2]]].emplace_back();
+                    tempHashIndex[table2.data[i][table2.colIndex[col2]]].emplace_back(i);
                 }
                 numRows = joinHelper(table1, table2, joinCols, col1, tempHashIndex, modes);
             }
@@ -824,17 +842,19 @@ int joinHelper(Table & table1, Table & table2, vector<pair<string, int>> joinCol
                 while(startCond != endCond){             
                     for(auto c: joinCols){
                         if(c.second==1){
-                            cout << table1.data[r][table1.colIndex[c.first]] << " ";
+                            cout <<  table1.data[r][table1.colIndex[c.first]] << " ";
                         }
                         else{
-                            cout << table2.data[r][table2.colIndex[c.first]] << " ";
+                            cout <<  table2.data[*startCond][table2.colIndex[c.first]] << " ";
                         }
                     }
                     cout << "\n";
                     ++startCond;
+                    //numRows+=1;
                 }
-                numRows += 1;
+                
             }
+            numRows += int(index.find(temp)->second.size());
         }
     }
 

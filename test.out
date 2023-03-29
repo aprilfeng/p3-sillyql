@@ -1,77 +1,69 @@
 % New table table3 with column(s) c1 c2 c3 created
+% Error during GENERATE: rand does not name a table in the database
+% Error during GENERATE: randCol does not name a column in table3
 % Created bst index for table table3 on column c1
-% Created bst index for table table3 on column c3
+% Error during PRINT: tab does not name a table in the database
+% Added 10 rows to table3 from position 0 to 9
+% New table table2 with column(s) c3 c4 c5 created
+% Added 10 rows to table2 from position 0 to 9
+% Created hash index for table table3 on column c1
+% Created hash index for table table2 on column c5
+% Error during PRINT: c5 does not name a column in table3
+% c1 c2 c3 
+1 1 true 
+1 1 false 
+1 -1 true 
+1 -1 false 
+Printed 4 matching rows from table3
+% Deleted 4 rows from table3
 % c1 c2 c3 
 Printed 0 matching rows from table3
-% Added 7 rows to table3 from position 0 to 6
+% Deleted 2 rows from table3
 % c1 c2 c3 
-a a -1.1 
-a c 0 
-Printed 2 matching rows from table3
+Printed 0 matching rows from table3
 % c1 c2 c3 
-b a -2.2 
-Printed 1 matching rows from table3
+-1 1 true 
+-1 1 false 
+-1 -1 true 
+-1 -1 false 
+Printed 4 matching rows from table3
+% Deleted 4 rows from table3
+% Created hash index for table table3 on column c3
+% Added 10 rows to table3 from position 0 to 9
+% c2 c3 
+1 true 
+1 false 
+1 true 
+1 false 
+Printed 4 matching rows from table3
+% Deleted 4 rows from table3
+% c2 c3 
+Printed 0 matching rows from table3
+% Added 3 rows to table3 from position 6 to 8
 % c1 c2 c3 
-c a -1.1 
-z y 1.1 
-z x 1.1 
-t u 3.3 
+1 -1 false 
+-1 -1 false 
+0 0 false 
+-1 1 false 
 Printed 4 matching rows from table3
 % c1 c2 c3 
-b a -2.2 
-a a -1.1 
-c a -1.1 
-a c 0 
-Printed 4 matching rows from table3
+Printed 0 matching rows from table3
 % c1 c2 c3 
-z y 1.1 
-z x 1.1 
-Printed 2 matching rows from table3
+1 -1 true 
+-1 -1 true 
+0 0 true 
+-1 1 true 
+-1 -1 true 
+Printed 5 matching rows from table3
+% Deleted 0 rows from table3
+% Deleted 4 rows from table3
 % c1 c2 c3 
-t u 3.3 
-Printed 1 matching rows from table3
-% Added 7 rows to table3 from position 7 to 13
-% c1 c2 c3 
-a a -1.1 
-a c 0 
-a w 2.2 
-Printed 3 matching rows from table3
-% c1 c2 c3 
-b a -2.2 
-b a 0 
-Printed 2 matching rows from table3
-% c1 c2 c3 
-c a -1.1 
-z y 1.1 
-z x 1.1 
-t u 3.3 
-d a -2.2 
-s x 1.1 
-f g 2.2 
-p p -3.3 
-z z 2.2 
-Printed 9 matching rows from table3
-% c1 c2 c3 
-p p -3.3 
-b a -2.2 
-d a -2.2 
-a a -1.1 
-c a -1.1 
-a c 0 
-b a 0 
-Printed 7 matching rows from table3
-% c1 c2 c3 
-z y 1.1 
-z x 1.1 
-s x 1.1 
-Printed 3 matching rows from table3
-% c1 c2 c3 
-f g 2.2 
-a w 2.2 
-z z 2.2 
-t u 3.3 
-Printed 4 matching rows from table3
-% New table table2 with column(s) c1 c2 c3 created
-% Added 7 rows to table2 from position 0 to 6
-% Created bst index for table table2 on column c2
-% 
+1 -1 true 
+-1 -1 true 
+0 0 true 
+-1 1 true 
+-1 -1 true 
+Printed 5 matching rows from table3
+% Deleted 5 rows from table3
+% Table table3 deleted
+% Thanks for being silly!

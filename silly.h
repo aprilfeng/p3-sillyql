@@ -62,15 +62,15 @@ class Table{
     string name;
     vector<EntryType> colTypes;
     vector<string> colNames;
-    unordered_map<string, int> colIndex;
+    unordered_map<string, int32_t> colIndex;
     vector<vector<TableEntry>> data;
-    string indexCol;
+    int32_t indexCol;
     char index = ' ';
-    unordered_map<TableEntry, vector<size_t>> hashIndex;
-    map<TableEntry, vector<size_t>> bstIndex;
+    unordered_map<TableEntry, vector<int32_t>> hashIndex;
+    map<TableEntry, vector<int32_t>> bstIndex;
     
     Table() {}
-    Table(string name, vector<EntryType> &cT, vector<string> &cN, unordered_map<string, int> &cI) : 
+    Table(string name, vector<EntryType> &cT, vector<string> &cN, unordered_map<string, int32_t> &cI) : 
             name(name), colTypes(cT), colNames(cN), colIndex(cI){
       //data.resize(0, vector<TableEntry>(0));
     }
