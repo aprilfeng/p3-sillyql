@@ -1,0 +1,46 @@
+CREATE table3 3 int int bool c1 c2 c3
+INSERT INTO table3 10 ROWS
+1 1 true
+1 1 false
+1 -1 true
+1 -1 false
+-1 1 true
+-1 1 false
+-1 -1 true
+-1 -1 false
+0 0 true
+0 0 false
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 > 0
+DELETE FROM table3 WHERE c1 > 0
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 > 0
+DELETE FROM table3 WHERE c1 = 0
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 = 0
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 < 0
+DELETE FROM table3 WHERE c1 < 0
+INSERT INTO table3 10 ROWS
+1 1 true
+1 1 false
+1 -1 true
+1 -1 false
+-1 1 true
+-1 1 false
+-1 -1 true
+-1 -1 false
+0 0 true
+0 0 false
+PRINT FROM table3 2 c2 c3 WHERE c2 > 0
+DELETE FROM table3 WHERE c2 > 0
+PRINT FROM table3 2 c2 c3 WHERE c2 > 0
+INSERT INTO table3 3 ROWS
+-1 1 true
+-1 1 false
+-1 -1 true
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 < true
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 > true
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 = true
+DELETE FROM table3 WHERE c3 > true
+DELETE FROM table3 WHERE c3 < true
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 = true
+DELETE FROM table3 WHERE c3 = true
+REMOVE table3
+QUIT

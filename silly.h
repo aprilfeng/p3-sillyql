@@ -8,6 +8,7 @@
 #include <iostream>
 #include <queue>
 #include <unordered_map>
+#include <map>
 #include "TableEntry.h"
 
 using namespace std;
@@ -19,6 +20,42 @@ struct Modes {
 
 void getMode(int argc, char * argv[], Modes &modes);
 
+//functors for comparisons
+class EqualTo{
+  public:
+    EqualTo(TableEntry t_in, size_t col_in) : te(t_in), col(col_in){}
+    bool operator() (vector<TableEntry> & entries) {
+      return entries[col] == te;
+    }
+
+  private:
+    TableEntry te;
+    size_t col;
+};
+
+class GreaterThan{
+  public:
+    GreaterThan(TableEntry t_in, size_t col_in) : te(t_in), col(col_in) {}
+    bool operator() (vector<TableEntry> & entries) {
+      return entries[col] > te;
+    }
+
+  private:
+    TableEntry te;
+    size_t col;
+};
+
+class LessThan{
+  public:
+    LessThan(TableEntry t_in, size_t col_in) : te(t_in), col(col_in){}
+    bool operator() (vector<TableEntry> & entries) {
+      return entries[col] < te;
+    }
+
+  private:
+    TableEntry te;
+    size_t col;
+};
 
 class Table{
   public:
@@ -27,6 +64,11 @@ class Table{
     vector<string> colNames;
     unordered_map<string, int> colIndex;
     vector<vector<TableEntry>> data;
+    string indexCol;
+    bool fixIndex = false;
+    char index = ' ';
+    unordered_map<TableEntry, vector<size_t>> hashIndex;
+    map<TableEntry, vector<size_t>> bstIndex;
     
     Table() {}
     Table(string name, vector<EntryType> &cT, vector<string> &cN, unordered_map<string, int> &cI) : 
@@ -34,10 +76,24 @@ class Table{
       //data.resize(0, vector<TableEntry>(0));
     }
 
-    
-    void printAll();
-    void printWhere();
+    void insertTable();
+    void printTable(Modes & modes);
+    int printHelper(Modes & modes, TableEntry & compareVal, char op, string compareCol, vector<int> & colPrintFlag, int numCols);
+
+    template<typename Comparator>
+    int printNoIndex(Modes & modes, string colName, TableEntry & compareVal, vector<int> & colPrintFlag, int numCols);
+
+    int printBst(Modes & modes, char op, TableEntry & compareVal, vector<int> & colPrintFlag, int numCols);
+
+    int printHash(Modes & modes, TableEntry & compareVal, vector<int> & colPrintFlag, int numCols);
+
+    void deleteCompareHelper(char op, string colName, TableEntry & compareVal);
+
+    template<typename Comparator>
+    void deleteWhere(string colName, TableEntry & compareVal);
+
     void generateIndex();
+    void updateIndex();
     void join();
 
     //table name
@@ -47,11 +103,20 @@ class Table{
 };
 
 void create(unordered_map<string, Table*> &);
+
 void remove(unordered_map<string, Table*> &);
+
 void insert(unordered_map<string, Table*> &database);
+
 void print(unordered_map<string, Table*> &database, Modes & modes);
+
+
+void deleteFrom(unordered_map<string, Table*> &database);
+
 void generate(unordered_map<string, Table*> &database);
-void join(unordered_map<string, Table*> &database);
+void updateIndex(unordered_map<string, Table*> &database);
+
+void join(unordered_map<string, Table*> &database, Modes & modes);
 
 
 /*

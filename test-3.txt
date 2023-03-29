@@ -1,0 +1,6 @@
+CREATE table3 3 string string double c1 c2 c3
+GENERATE FOR table3 bst INDEX ON c1
+GENERATE FOR table3 bst INDEX ON c3
+PRINT FROM table3 3 c1 c2 c3 ALL
+UNKNOWNCMD
+QUIT

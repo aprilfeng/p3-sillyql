@@ -1,0 +1,59 @@
+% New table table3 with column(s) c1 c2 c3 created
+% Added 10 rows to table3 from position 0 to 9
+% c1 c2 c3 
+1 1 true 
+1 1 false 
+1 -1 true 
+1 -1 false 
+Printed 4 matching rows from table3
+% Deleted 4 rows from table3
+% c1 c2 c3 
+Printed 0 matching rows from table3
+% Deleted 2 rows from table3
+% c1 c2 c3 
+Printed 0 matching rows from table3
+% c1 c2 c3 
+-1 1 true 
+-1 1 false 
+-1 -1 true 
+-1 -1 false 
+Printed 4 matching rows from table3
+% Deleted 4 rows from table3
+% Added 10 rows to table3 from position 0 to 9
+% c2 c3 
+1 true 
+1 false 
+1 true 
+1 false 
+Printed 4 matching rows from table3
+% Deleted 4 rows from table3
+% c2 c3 
+Printed 0 matching rows from table3
+% Added 3 rows to table3 from position 6 to 8
+% c1 c2 c3 
+1 -1 false 
+-1 -1 false 
+0 0 false 
+-1 1 false 
+Printed 4 matching rows from table3
+% c1 c2 c3 
+Printed 0 matching rows from table3
+% c1 c2 c3 
+1 -1 true 
+-1 -1 true 
+0 0 true 
+-1 1 true 
+-1 -1 true 
+Printed 5 matching rows from table3
+% Deleted 0 rows from table3
+% Deleted 4 rows from table3
+% c1 c2 c3 
+1 -1 true 
+-1 -1 true 
+0 0 true 
+-1 1 true 
+-1 -1 true 
+Printed 5 matching rows from table3
+% Deleted 5 rows from table3
+% Table table3 deleted
+% Thanks for being silly!

@@ -16,6 +16,20 @@ PRINT FROM table3 3 c1 c2 c3 WHERE c1 > b
 PRINT FROM table3 3 c1 c2 c3 WHERE c3 < 1.1
 PRINT FROM table3 3 c1 c2 c3 WHERE c3 = 1.1
 PRINT FROM table3 3 c1 c2 c3 WHERE c3 > 1.1
+INSERT INTO table3 7 ROWS
+d a -2.2
+b a 0.0
+s x 1.1
+f g 2.2
+a w 2.2
+p p -3.3
+z z 2.2
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 < b
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 = b
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 > b
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 < 1.1
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 = 1.1
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 > 1.1
 CREATE table2 3 string string double c1 c2 c3
 INSERT INTO table2 7 ROWS
 l z -1.1
@@ -32,11 +46,5 @@ PRINT FROM table3 3 c1 c2 c3 ALL
 DELETE FROM table3 WHERE c1 < b
 DELETE FROM table3 WHERE c1 = b
 PRINT FROM table3 3 c1 c2 c3 ALL
-DELETE FROM table2 WHERE c3 = 1.1
-PRINT FROM table2 3 c1 c2 c3 ALL
-DELETE FROM table2 WHERE c3 < 1.1
-PRINT FROM table2 3 c1 c2 c3 ALL
-DELETE FROM table2 WHERE c3 > 1.1
-PRINT FROM table2 3 c1 c2 c3 ALL
 REMOVE table3
 QUIT
