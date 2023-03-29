@@ -65,7 +65,6 @@ class Table{
     unordered_map<string, int> colIndex;
     vector<vector<TableEntry>> data;
     string indexCol;
-    bool fixIndex = false;
     char index = ' ';
     unordered_map<TableEntry, vector<size_t>> hashIndex;
     map<TableEntry, vector<size_t>> bstIndex;
@@ -82,9 +81,7 @@ class Table{
 
     template<typename Comparator>
     int printNoIndex(Modes & modes, string colName, TableEntry & compareVal, vector<int> & colPrintFlag, int numCols);
-
     int printBst(Modes & modes, char op, TableEntry & compareVal, vector<int> & colPrintFlag, int numCols);
-
     int printHash(Modes & modes, TableEntry & compareVal, vector<int> & colPrintFlag, int numCols);
 
     void deleteCompareHelper(char op, string colName, TableEntry & compareVal);
@@ -92,9 +89,7 @@ class Table{
     template<typename Comparator>
     void deleteWhere(string colName, TableEntry & compareVal);
 
-    void generateIndex();
     void updateIndex();
-    void join();
 
     //table name
     //column names (with order)
@@ -102,23 +97,22 @@ class Table{
     //k
 };
 
-void create(unordered_map<string, Table*> &);
+void create(unordered_map<string, Table> &);
 
-void remove(unordered_map<string, Table*> &);
+void remove(unordered_map<string, Table> &);
 
-void insert(unordered_map<string, Table*> &database);
+void insert(unordered_map<string, Table> &database);
 
-void print(unordered_map<string, Table*> &database, Modes & modes);
+void print(unordered_map<string, Table> &database, Modes & modes);
 
+void deleteFrom(unordered_map<string, Table> &database);
 
-void deleteFrom(unordered_map<string, Table*> &database);
+void generate(unordered_map<string, Table> &database);
 
-void generate(unordered_map<string, Table*> &database);
-void updateIndex(unordered_map<string, Table*> &database);
+void join(unordered_map<string, Table> &database, Modes & modes);
 
-void join(unordered_map<string, Table*> &database, Modes & modes);
-
-
+template <typename T>
+int joinHelper(Table & table1, Table & table2, vector<pair<string, int>> joinCols, string col1, T & index, Modes & modes);
 /*
 
 INSERT

@@ -1,59 +1,68 @@
 % New table table3 with column(s) c1 c2 c3 created
-% Added 10 rows to table3 from position 0 to 9
-% c1 c2 c3 
-1 1 true 
-1 1 false 
-1 -1 true 
-1 -1 false 
-Printed 4 matching rows from table3
-% Deleted 4 rows from table3
+% Created bst index for table table3 on column c1
+% Created bst index for table table3 on column c3
 % c1 c2 c3 
 Printed 0 matching rows from table3
+% Added 7 rows to table3 from position 0 to 6
+% c1 c2 c3 
+a a -1.1 
+a c 0 
+Printed 2 matching rows from table3
+% c1 c2 c3 
+b a -2.2 
+Printed 1 matching rows from table3
+% c1 c2 c3 
+c a -1.1 
+z y 1.1 
+z x 1.1 
+t u 3.3 
+Printed 4 matching rows from table3
+% c1 c2 c3 
+b a -2.2 
+a a -1.1 
+c a -1.1 
+a c 0 
+Printed 4 matching rows from table3
+% c1 c2 c3 
+z y 1.1 
+z x 1.1 
+Printed 2 matching rows from table3
+% c1 c2 c3 
+t u 3.3 
+Printed 1 matching rows from table3
+% New table table2 with column(s) c1 c2 c3 created
+% Added 7 rows to table2 from position 0 to 6
+% Created bst index for table table2 on column c2
+% c1 c2 c3 
+z y 1.1 
+z x 1.1 
+z x 1.1 
+t u 3.3 
+Printed 3 rows from joining table3 to table2
+% Deleted 4 rows from table3
+% c1 c2 c3 
+a a -1.1 
+b a -2.2 
+a c 0 
+Printed 3 matching rows from table3
 % Deleted 2 rows from table3
+% Deleted 1 rows from table3
 % c1 c2 c3 
 Printed 0 matching rows from table3
+% Deleted 2 rows from table2
 % c1 c2 c3 
--1 1 true 
--1 1 false 
--1 -1 true 
--1 -1 false 
-Printed 4 matching rows from table3
-% Deleted 4 rows from table3
-% Added 10 rows to table3 from position 0 to 9
-% c2 c3 
-1 true 
-1 false 
-1 true 
-1 false 
-Printed 4 matching rows from table3
-% Deleted 4 rows from table3
-% c2 c3 
-Printed 0 matching rows from table3
-% Added 3 rows to table3 from position 6 to 8
+l z -1.1 
+m z -2.2 
+n z -1.1 
+x x 0 
+t u 3.3 
+Printed 5 matching rows from table2
+% Deleted 4 rows from table2
 % c1 c2 c3 
-1 -1 false 
--1 -1 false 
-0 0 false 
--1 1 false 
-Printed 4 matching rows from table3
+t u 3.3 
+Printed 1 matching rows from table2
+% Deleted 1 rows from table2
 % c1 c2 c3 
-Printed 0 matching rows from table3
-% c1 c2 c3 
-1 -1 true 
--1 -1 true 
-0 0 true 
--1 1 true 
--1 -1 true 
-Printed 5 matching rows from table3
-% Deleted 0 rows from table3
-% Deleted 4 rows from table3
-% c1 c2 c3 
-1 -1 true 
--1 -1 true 
-0 0 true 
--1 1 true 
--1 -1 true 
-Printed 5 matching rows from table3
-% Deleted 5 rows from table3
+Printed 0 matching rows from table2
 % Table table3 deleted
 % Thanks for being silly!

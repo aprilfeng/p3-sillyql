@@ -1,46 +1,50 @@
-CREATE table3 3 int int bool c1 c2 c3
-INSERT INTO table3 10 ROWS
-1 1 true
-1 1 false
-1 -1 true
-1 -1 false
--1 1 true
--1 1 false
--1 -1 true
--1 -1 false
-0 0 true
-0 0 false
-PRINT FROM table3 3 c1 c2 c3 WHERE c1 > 0
-DELETE FROM table3 WHERE c1 > 0
-PRINT FROM table3 3 c1 c2 c3 WHERE c1 > 0
-DELETE FROM table3 WHERE c1 = 0
-PRINT FROM table3 3 c1 c2 c3 WHERE c1 = 0
-PRINT FROM table3 3 c1 c2 c3 WHERE c1 < 0
-DELETE FROM table3 WHERE c1 < 0
-INSERT INTO table3 10 ROWS
-1 1 true
-1 1 false
-1 -1 true
-1 -1 false
--1 1 true
--1 1 false
--1 -1 true
--1 -1 false
-0 0 true
-0 0 false
-PRINT FROM table3 2 c2 c3 WHERE c2 > 0
-DELETE FROM table3 WHERE c2 > 0
-PRINT FROM table3 2 c2 c3 WHERE c2 > 0
-INSERT INTO table3 3 ROWS
--1 1 true
--1 1 false
--1 -1 true
-PRINT FROM table3 3 c1 c2 c3 WHERE c3 < true
-PRINT FROM table3 3 c1 c2 c3 WHERE c3 > true
-PRINT FROM table3 3 c1 c2 c3 WHERE c3 = true
-DELETE FROM table3 WHERE c3 > true
-DELETE FROM table3 WHERE c3 < true
-PRINT FROM table3 3 c1 c2 c3 WHERE c3 = true
-DELETE FROM table3 WHERE c3 = true
+CREATE table3 3 string string double c1 c2 c3
+GENERATE FOR table3 bst INDEX ON c1
+GENERATE FOR table3 bst INDEX ON c3
+PRINT FROM table3 3 c1 c2 c3 ALL
+INSERT INTO table3 7 ROWS
+a a -1.1
+b a -2.2
+c a -1.1
+a c 0.0
+z y 1.1
+z x 1.1
+t u 3.3
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 < b
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 = b
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 > b
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 < 1.1
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 = 1.1
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 > 1.1
+INSERT INTO table3 7 ROWS
+d a -2.2
+b a 0.0
+s x 1.1
+f g 2.2
+a w 2.2
+p p -3.3
+z z 2.2
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 < b
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 = b
+PRINT FROM table3 3 c1 c2 c3 WHERE c1 > b
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 < 1.1
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 = 1.1
+PRINT FROM table3 3 c1 c2 c3 WHERE c3 > 1.1
+CREATE table2 3 string string double c1 c2 c3
+INSERT INTO table2 7 ROWS
+l z -1.1
+m z -2.2
+n z -1.1
+x x 0.0
+a y 1.1
+a x 1.1
+t u 3.3
+GENERATE FOR table2 bst INDEX ON c2
+JOIN table3 AND table2 WHERE c2 = c2 AND PRINT 3 c1 1 c2 2 c3 1
+DELETE FROM table3 WHERE c1 > b
+PRINT FROM table3 3 c1 c2 c3 ALL
+DELETE FROM table3 WHERE c1 < b
+DELETE FROM table3 WHERE c1 = b
+PRINT FROM table3 3 c1 c2 c3 ALL
 REMOVE table3
 QUIT
